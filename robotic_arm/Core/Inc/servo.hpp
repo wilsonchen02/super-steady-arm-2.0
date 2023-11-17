@@ -24,6 +24,6 @@ public:
 private:
 	UART_HandleTypeDef *huart;
 	uint8_t id;
-	uint8_t tx_buffer[10];
+
 
 };

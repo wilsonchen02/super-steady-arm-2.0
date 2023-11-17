@@ -93,25 +93,42 @@ int main(void)
 
   // TESTING UART message
 
-//  HAL_Delay(1000);
+  HAL_Delay(1000);
 //  uint8_t tx_buf[10] = {0x55, 0x55, 0x06, 0x07, 0x01, 0x1E, 0x88, 0x08, 0x00, 0x4B};
-  uint8_t tx_buf[10] = {0x55, 0x55, 0x06, 0x07, 0x01, 0x1E, 0x00, 0x00, 0x00, 0xD3};
+  uint8_t tx_buf[4][10] = {
+  {0x55, 0x55, 0x04, 0x07, 0x01, 0xBB, 0x00, 0x00, 0x00, 0x38},
+  {0x55, 0x55, 0x04, 0x07, 0x01, 0x77, 0x01, 0x00, 0x00, 0x7B},
+  {0x55, 0x55, 0x03, 0x07, 0x01, 0xBB, 0x00, 0x00, 0x00, 0x39},
+  {0x55, 0x55, 0x03, 0x07, 0x01, 0x77, 0x01, 0x00, 0x00, 0x7C}
+  };
+//  uint8_t tx_buf0[0] = {0x55, 0x55, 0x06, 0x07, 0x01, 0x1E, 0x00, 0x00, 0x00, 0xD3};	// id6
+//  uint8_t tx_buf1[1] = {0x55, 0x55, 0x06, 0x07, 0x01, 0x, 0x00, 0x00, 0x00, 0xD3};
 //  uint8_t tx_buf[10] = {0x00, 0x00, 0x00, 0x07, 0x01, 0x1E, 0x00, 0x00, 0x00, 0xD3};
 
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, 0);
-  if(HAL_UART_Transmit(&huart1, tx_buf, 10, 50) == HAL_ERROR) {
-	  // Enable GPIO
-	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, 1);
-  }
-  HAL_Delay(200);
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, 0);
+  HAL_UART_Transmit(&huart1, tx_buf[0], 10, 50);
+	HAL_Delay(1000);
+	HAL_UART_Transmit(&huart1, tx_buf[1], 10, 50);
+	HAL_Delay(1000);
+  HAL_UART_Transmit(&huart1, tx_buf[2], 10, 50);
+  HAL_Delay(1000);
+  HAL_UART_Transmit(&huart1, tx_buf[3], 10, 50);
+  HAL_Delay(1000);
+
+
+//  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, 0);
+//  if(HAL_UART_Transmit(&huart1, tx_buf0, 10, 50) == HAL_ERROR) {
+//	  // Enable GPIO
+//	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, 1);
+//  }
+//  HAL_Delay(200);
+//  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, 0);
 //  tx_buf[0] = 0xFF;
 //  HAL_UART_Transmit(&huart1, tx_buf, 10, 50);
 //  tx_buf[0] = 0x00;
 //  HAL_UART_Transmit(&huart1, tx_buf, 10, 50);
 
 
-  int counter = 0;
+//  int counter = 0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -119,11 +136,6 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-//	  if(counter < 5) {
-//		  HAL_UART_Transmit(&huart1, tx_buf, 10, 50);
-//		  ++counter;
-//	  }
-
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
