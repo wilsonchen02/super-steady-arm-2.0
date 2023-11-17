@@ -101,15 +101,14 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  HAL_TIM_Encoder_Start(&htim1,  TIM_CHANNEL_ALL);
-  HAL_TIM_PWM_Start(&htim2,  TIM_CHANNEL_1);
-  TIM2->CCR1 = TIM2->ARR / 2;
+  init();
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  TIM2->CCR1 = TIM1->CNT;
+	  loop();
+	  HAL_Delay(500);
   }
   /* USER CODE END 3 */
 }
@@ -278,7 +277,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 31;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 2499;
+  htim2.Init.Period = 359;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
