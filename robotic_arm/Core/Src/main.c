@@ -57,24 +57,28 @@ static void MX_USART1_UART_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+
+
 /* Given servo ID and an angle from range 0-1000 of the servo's software limits,
  * move the servo to the corresponding angle
  * @param servo_id: servo to move
  * @param angle: angle metric range 0-1000 that the servo is to go to
  */
-void servo_write(uint16_t servo_id, int angle) {
-	if (angle > 1000 || angle < 0) {
-//		throw std::runtime_error("angle out of range");
-	}
-	float angle_ratio = angle / 1000.0;
-	uint16_t angle_low = angle & 0xFF;
-	uint16_t angle_high = (angle >> 8) & 0xFF;
-	// This should constrain sum to 16 bits
-	uint16_t sum = servo_id + angle_low + angle_high + 0x7 + 0x1;
-	sum = ~sum & 0xFF;
-	uint8_t tx_buf[10] = {0x55, 0x55, servo_id, 0x7, 0x1, angle_low, angle_high, 0x0, 0x0, sum};
-	HAL_UART_Transmit(&huart1, tx_buf[0], 10, 50);
-}
+//void servo_write(UART_HandleTypeDef *huart, uint16_t servo_id, uint16_t angle) {
+//	if (angle > 1000 || angle < 0) {
+////		throw std::runtime_error("angle out of range");
+//		return;
+//	}
+////	float angle_ratio = angle / 1000.0;
+//	uint8_t angle_low = angle & 0xFF;
+//	uint8_t angle_high = (angle >> 8) & 0xFF;
+//	// This should constrain sum to 16 bits
+//	uint16_t sum = servo_id + angle_low + angle_high + 0x7 + 0x1;
+//	sum = ~sum & 0xFF;
+//	uint8_t tx_buf[10] = {0x55, 0x55, servo_id, 0x7, 0x1, angle_low, angle_high, 0x0, 0x0, sum};
+//	HAL_UART_Transmit(huart, tx_buf, 10, 50);
+//}
+
 
 /* USER CODE END 0 */
 
@@ -107,51 +111,8 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART1_UART_Init();
-//  HAL_Delay(10);
   /* USER CODE BEGIN 2 */
-
-  // TESTING UART message
-
-  HAL_Delay(1000);
-//  uint8_t tx_buf[10] = {0x55, 0x55, 0x06, 0x07, 0x01, 0x1E, 0x88, 0x08, 0x00, 0x4B};
-  uint8_t tx_buf[4][10] = {
-  // 0 and 1000 for motor 6 joint A (like 70 degrees?)
-  {0x55, 0x55, 0x06, 0x07, 0x01, 0x00, 0x00, 0x00, 0x00, 0xF1},
-  {0x55, 0x55, 0x06, 0x07, 0x01, 0xe8, 0x03, 0x00, 0x00, 0x06},
-  {0x55, 0x55, 0x03, 0x07, 0x01, 0x00, 0x00, 0x00, 0x00, 0xF4},
-  {0x55, 0x55, 0x03, 0x07, 0x01, 0xe8, 0x03, 0x00, 0x00, 0x09}
-  };
-
-  servo_write(3, 1000);
-  HAL_Delay(1000);
-//  uint8_t tx_buf0[0] = {0x55, 0x55, 0x06, 0x07, 0x01, 0x1E, 0x00, 0x00, 0x00, 0xD3};	// id6
-//  uint8_t tx_buf1[1] = {0x55, 0x55, 0x06, 0x07, 0x01, 0x, 0x00, 0x00, 0x00, 0xD3};
-//  uint8_t tx_buf[10] = {0x00, 0x00, 0x00, 0x07, 0x01, 0x1E, 0x00, 0x00, 0x00, 0xD3};
-
-//  HAL_UART_Transmit(&huart1, tx_buf[2], 10, 50);
-//	HAL_Delay(1000);
-//	HAL_UART_Transmit(&huart1, tx_buf[3], 10, 50);
-//	HAL_Delay(1000);
-//  HAL_UART_Transmit(&huart1, tx_buf[2], 10, 50);
-//  HAL_Delay(1000);
-//  HAL_UART_Transmit(&huart1, tx_buf[3], 10, 50);
-//  HAL_Delay(1000);
-
-
-//  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, 0);
-//  if(HAL_UART_Transmit(&huart1, tx_buf0, 10, 50) == HAL_ERROR) {
-//	  // Enable GPIO
-//	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, 1);
-//  }
-//  HAL_Delay(200);
-//  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, 0);
-//  tx_buf[0] = 0xFF;
-//  HAL_UART_Transmit(&huart1, tx_buf, 10, 50);
-//  tx_buf[0] = 0x00;
-//  HAL_UART_Transmit(&huart1, tx_buf, 10, 50);
-
-
-//  int counter = 0;
+  init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -160,6 +121,7 @@ int main(void)
   {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
+	  loop();
   }
   /* USER CODE END 3 */
 }
