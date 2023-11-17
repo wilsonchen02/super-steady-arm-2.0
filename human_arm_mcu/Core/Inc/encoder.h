@@ -1,4 +1,5 @@
-// TODO: Change to be actual TIM
+#include "main.h"
+ TODO: Change to be actual TIM
 constexpr TIM_HandleTypeDEF ENCODER_HTIM = htim2;
 constexpr TIM_HandleTypeDEF ENCODER_TIM = TIM2;
 

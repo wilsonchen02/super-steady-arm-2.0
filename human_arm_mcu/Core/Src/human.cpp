@@ -1,8 +1,9 @@
 #include "encoder.h"
 #include "main.h"
+#include "main.c"
 
 void loop() {
-
+  
 }
 
 void init() {
