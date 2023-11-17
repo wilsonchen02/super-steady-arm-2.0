@@ -1,10 +1,14 @@
 #include "encoder.h"
 #include "main.h"
-#include "main.c"
 Encoder encoder;
 
+extern I2C_HandleTypeDef hi2c1;
+
+extern TIM_HandleTypeDef htim1;
+extern TIM_HandleTypeDef htim2;
+
 void loop() {
-  encoder.get_position_change();
+  TIM2->CCR1 = static_cast<uint32_t> (encoder.get_position_change());
 }
 
 void init() {

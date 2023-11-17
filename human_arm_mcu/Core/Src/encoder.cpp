@@ -6,7 +6,7 @@ float Encoder::get_position_change() {
     this->m_prev_counts = current_counts;
 
     //TODO: convert from counts to position somehow
-    return delta / 360.0;
+    return (delta / 2500) * 360.0;
 }
 
 void Encoder::init(TIM_TypeDef *_tim) {
