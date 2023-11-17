@@ -1,12 +1,15 @@
 #include "encoder.h"
 
-float Encoder::get_position_change() {
+void Encoder::update_position() {
     uint16_t current_counts = this->m_tim->CNT;
     int delta = current_counts - this->m_prev_counts;
     this->m_prev_counts = current_counts;
+}
 
-    //TODO: convert from counts to position somehow
-    return (delta / 2500) * 360.0;
+float Encoder::get_position() {
+    update_position();
+    // current position in angles
+    return (this->m_prev_counts / 2500) * 360.0;
 }
 
 void Encoder::init(TIM_TypeDef *_tim) {
