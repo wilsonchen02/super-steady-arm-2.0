@@ -12,9 +12,10 @@
 class Encoder {
     public:
     void init(TIM_TypeDef *_tim);
-    float get_position_change();
+    float get_position();
 
     private:
+    void update_position();
     TIM_TypeDef* m_tim;
     uint16_t m_prev_counts;
 };

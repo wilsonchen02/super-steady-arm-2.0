@@ -7,8 +7,9 @@ extern I2C_HandleTypeDef hi2c1;
 extern TIM_HandleTypeDef htim1;
 extern TIM_HandleTypeDef htim2;
 
+
 void loop() {
-  TIM2->CCR1 = static_cast<uint32_t> (encoder.get_position_change());
+  float enc_cur_angle = encoder.get_position();
 }
 
 void init() {
