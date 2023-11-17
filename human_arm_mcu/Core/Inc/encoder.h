@@ -1,7 +1,4 @@
 #include "main.h"
- TODO: Change to be actual TIM
-constexpr TIM_HandleTypeDEF ENCODER_HTIM = htim2;
-constexpr TIM_HandleTypeDEF ENCODER_TIM = TIM2;
 
 /* TODO: 
  * Do we want to implement position using the encoder?
@@ -14,11 +11,10 @@ constexpr TIM_HandleTypeDEF ENCODER_TIM = TIM2;
 
 class Encoder {
     public:
-    void init();
+    void init(TIM_TypeDef *_tim);
     float get_position_change();
 
     private:
-    TIM_HandleTypeDEF m_handler = ENCODER_HTIM;
-    TIM_TypeDef* m_tim = ENCODER_TIM;
+    TIM_TypeDef* m_tim;
     uint16_t m_prev_counts;
 };

@@ -6,14 +6,11 @@ float Encoder::get_position_change() {
     this->m_prev_counts = current_counts;
 
     //TODO: convert from counts to position somehow
-    return static_cast<float>(delta);
+    return delta / 360.0;
 }
 
-void Encoder::init() {
-    // TODO: Might not need. Check what auto code generation does for us
-    // Initalize TIM->CNT to some value?
-    // Initalize the channels/timer in encoder mode
-    
-
-
+void Encoder::init(TIM_TypeDef *_tim) {
+    this->m_tim = _tim;
+    m_tim->CNT = 0;
+    m_prev_counts = 0;
 }
