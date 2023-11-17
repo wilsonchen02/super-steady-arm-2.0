@@ -88,8 +88,30 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART1_UART_Init();
+//  HAL_Delay(10);
   /* USER CODE BEGIN 2 */
 
+  // TESTING UART message
+
+//  HAL_Delay(1000);
+//  uint8_t tx_buf[10] = {0x55, 0x55, 0x06, 0x07, 0x01, 0x1E, 0x88, 0x08, 0x00, 0x4B};
+  uint8_t tx_buf[10] = {0x55, 0x55, 0x06, 0x07, 0x01, 0x1E, 0x00, 0x00, 0x00, 0xD3};
+//  uint8_t tx_buf[10] = {0x00, 0x00, 0x00, 0x07, 0x01, 0x1E, 0x00, 0x00, 0x00, 0xD3};
+
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, 0);
+  if(HAL_UART_Transmit(&huart1, tx_buf, 10, 50) == HAL_ERROR) {
+	  // Enable GPIO
+	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, 1);
+  }
+  HAL_Delay(200);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, 0);
+//  tx_buf[0] = 0xFF;
+//  HAL_UART_Transmit(&huart1, tx_buf, 10, 50);
+//  tx_buf[0] = 0x00;
+//  HAL_UART_Transmit(&huart1, tx_buf, 10, 50);
+
+
+  int counter = 0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -97,6 +119,10 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+//	  if(counter < 5) {
+//		  HAL_UART_Transmit(&huart1, tx_buf, 10, 50);
+//		  ++counter;
+//	  }
 
     /* USER CODE BEGIN 3 */
   }
@@ -189,11 +215,22 @@ static void MX_USART1_UART_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
 /* USER CODE BEGIN MX_GPIO_Init_1 */
 /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : PA8 */
+  GPIO_InitStruct.Pin = GPIO_PIN_8;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
