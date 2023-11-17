@@ -101,8 +101,6 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  HAL_TIM_Encoder_Start(&htim1,  TIM_CHANNEL_ALL);
-  HAL_TIM_PWM_Start(&htim2,  TIM_CHANNEL_1);
   TIM2->CCR1 = TIM2->ARR / 2;
   while (1)
   {
