@@ -1,3 +1,5 @@
+#ifndef __ENCODER_H
+#define __ENCODER_H
 #include "main.h"
 
 /* TODO: 
@@ -11,11 +13,13 @@
 
 class Encoder {
     public:
-    void init(TIM_TypeDef *_tim);
+    Encoder(TIM_HandleTypeDef *_tim);
     float get_position();
 
     private:
     void update_position();
-    TIM_TypeDef* m_tim;
+    TIM_HandleTypeDef* m_tim;
     uint16_t m_prev_counts;
 };
+
+#endif /* __ENCODER_H */
