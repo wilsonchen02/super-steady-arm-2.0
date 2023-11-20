@@ -57,29 +57,6 @@ static void MX_USART1_UART_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-
-
-/* Given servo ID and an angle from range 0-1000 of the servo's software limits,
- * move the servo to the corresponding angle
- * @param servo_id: servo to move
- * @param angle: angle metric range 0-1000 that the servo is to go to
- */
-//void servo_write(UART_HandleTypeDef *huart, uint16_t servo_id, uint16_t angle) {
-//	if (angle > 1000 || angle < 0) {
-////		throw std::runtime_error("angle out of range");
-//		return;
-//	}
-////	float angle_ratio = angle / 1000.0;
-//	uint8_t angle_low = angle & 0xFF;
-//	uint8_t angle_high = (angle >> 8) & 0xFF;
-//	// This should constrain sum to 16 bits
-//	uint16_t sum = servo_id + angle_low + angle_high + 0x7 + 0x1;
-//	sum = ~sum & 0xFF;
-//	uint8_t tx_buf[10] = {0x55, 0x55, servo_id, 0x7, 0x1, angle_low, angle_high, 0x0, 0x0, sum};
-//	HAL_UART_Transmit(huart, tx_buf, 10, 50);
-//}
-
-
 /* USER CODE END 0 */
 
 /**
@@ -120,6 +97,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+
     /* USER CODE BEGIN 3 */
 	  loop();
   }
@@ -212,22 +190,11 @@ static void MX_USART1_UART_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
 /* USER CODE BEGIN MX_GPIO_Init_1 */
 /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin : PA8 */
-  GPIO_InitStruct.Pin = GPIO_PIN_8;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */

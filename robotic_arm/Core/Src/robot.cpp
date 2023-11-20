@@ -22,16 +22,27 @@ void init() {
 		servo.push_back(Servo(&huart1, i+1));
 	}
 
-	servo[3].servo_write(300);	// Goes to max limit
+	servo[0].write_angle(500, 0);
 	HAL_Delay(1000);
-	servo[0].servo_write(0);	// Goes to max limit
-	HAL_Delay(1000);
-	servo[0].servo_write(1000);	// Goes to max limit
-	HAL_Delay(1000);
-	servo[2].servo_write(0);	// Goes to max limit
-	HAL_Delay(1000);
-	servo[2].servo_write(1000);
-	HAL_Delay(1000);
+	servo[0].read_angle();
+//	servo[0].write_limits(200, 500);
+//	HAL_Delay(1000);
+//	servo[3].write_angle(300, 0);	// Goes to max limit
+//	HAL_Delay(1000);
+//	servo[0].write_angle(0, 0);	// Goes to max limit
+//	HAL_Delay(1000);
+//	servo[0].write_angle(1000, 0);	// Goes to max limit
+//	HAL_Delay(1000);
+//	servo[0].write_limits(0, 1000);
+//	HAL_Delay(1000);
+//	servo[0].write_angle(0, 0);	// Goes to max limit
+//	HAL_Delay(1000);
+//	servo[0].write_angle(1000, 0);	// Goes to max limit
+//	HAL_Delay(1000);
+//	servo[2].write_angle(0);	// Goes to max limit
+//	HAL_Delay(1000);
+//	servo[2].write_angle(1000);
+//	HAL_Delay(1000);
 
 	//  uint8_t tx_buf0[0] = {0x55, 0x55, 0x06, 0x07, 0x01, 0x1E, 0x00, 0x00, 0x00, 0xD3};	// id6
 	//  uint8_t tx_buf1[1] = {0x55, 0x55, 0x06, 0x07, 0x01, 0x, 0x00, 0x00, 0x00, 0xD3};
