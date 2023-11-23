@@ -25,7 +25,7 @@ IMU::IMU(I2C_HandleTypeDef* i2c_handle_in, uint8_t address): i2c_handle{i2c_hand
   HAL_Delay(2);
 }
 
-void IMU::getEulerAngles(std::vector<double> &eulerAngles){
+void IMU::getEulerAngles(std::vector<float> &eulerAngles){
 	uint8_t euler_angles[6];
 	HAL_I2C_Mem_Read(i2c_handle, address<<1, BNO055_EULER_START_ADDR, I2C_MEMADD_SIZE_8BIT, euler_angles, 6, 30);
 	int16_t yaw = ((int16_t)euler_angles[0]) | (((int16_t)euler_angles[1]) << 8);

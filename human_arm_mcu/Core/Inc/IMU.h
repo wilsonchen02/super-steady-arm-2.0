@@ -51,7 +51,7 @@ public:
 	IMU(I2C_HandleTypeDef* i2c_handle_in, uint8_t address);
 
 
-	void getEulerAngles(std::vector<double> &eulerAngles);
+	void getEulerAngles(std::vector<float> &eulerAngles);
 
 
 
