@@ -1,21 +1,32 @@
-#include "servo.h"
-
+#include "Servo.h"
 #include <vector>
 
 /* Constructor for servo
  * @param huart_in: pointer to UART handler
  * @param id_in: ID of the servo
+ * @param min_angle: min val of servo's limit (using the servo's range system)
+ * @param max_angle: max val of servo's limit (using the servo's range system)
  */
-Servo::Servo(UART_HandleTypeDef *huart_in, uint8_t id_in) :
-	huart(huart_in), id(id_in) {}
+Servo::Servo(UART_HandleTypeDef *huart_in, uint8_t id_in, uint16_t min_angle, uint16_t max_angle) :
+	huart(huart_in), id(id_in), min_angle(min_angle), max_angle(max_angle) {
+	write_limits(min_angle, max_angle);
+}
 
-/* Initialize private variables for servo
- * @param huart_in: pointer to UART handler
- * @param id_in: ID of the servo
+/* Read angle of servo
+ * NOTE: This is only for debugging purposes with the logic analyzer,
+ * the nucleo is not receiving the return packet
  */
-void Servo::init(UART_HandleTypeDef *huart_in, uint8_t id_in) {
-	huart = huart_in;
-	id = id_in;
+void Servo::read_angle() {
+	uint8_t data_length = 0x3;
+	uint8_t command_val = 28;
+	uint16_t sum = id + data_length + command_val;
+	uint16_t neg_sum = ~sum;
+	if (sum > 255){
+		neg_sum = ~(0xFF&sum);
+	}
+	uint8_t checksum = (uint8_t)neg_sum;
+	uint8_t tx_buf[6] = {0x55, 0x55, id, data_length, command_val, checksum};
+	HAL_UART_Transmit(huart, tx_buf, data_length + 3, 50);
 }
 
 
@@ -41,20 +52,13 @@ void Servo::write_angle(uint16_t angle, uint16_t time) {
 	uint8_t data_length = 0x7;
 	uint8_t command_val = 0x1;
 	uint16_t sum = id + data_length + command_val + angle_low + angle_high;
-	sum = ~sum & 0xFF;
-	uint8_t tx_buf[10] = {0x55, 0x55, id, data_length, command_val, angle_low, angle_high, 0x0, 0x0, sum};
-	HAL_UART_Transmit(huart, tx_buf, data_length + 3, 50);
-
-	// Update current_angle
-	current_angle = angle;
-}
-
-void Servo::read_angle() {
-	uint8_t data_length = 0x3;
-	uint8_t command_val = 0x2;
-	uint16_t sum = id + data_length + command_val;
-	uint8_t tx_buf[6] = {0x55, 0x55, id, data_length, command_val, sum};
-	sum = ~sum & 0xFF;
+//	sum = ~(sum & 0xFF);
+	uint16_t neg_sum = ~sum;
+	if (sum>255){
+		neg_sum = ~(0xFF&sum);
+	}
+	uint8_t checksum = (uint8_t)neg_sum;
+	uint8_t tx_buf[10] = {0x55, 0x55, id, data_length, command_val, angle_low, angle_high, 0x0, 0x0, checksum};
 	HAL_UART_Transmit(huart, tx_buf, data_length + 3, 50);
 }
 
@@ -77,7 +81,11 @@ void Servo::write_limits(uint16_t min_angle, uint16_t max_angle) {
 	uint8_t data_length = 0x7;
 	uint8_t command_val = 0x14;
 	uint16_t sum = id + data_length + command_val + min_angle_low + min_angle_high + max_angle_low + max_angle_high;
-	sum = ~sum & 0xFF;
-	uint8_t tx_buf[10] = {0x55, 0x55, id, data_length, command_val, min_angle_low, min_angle_high, max_angle_low, max_angle_high, sum};
+	uint16_t neg_sum = ~sum;
+	if (sum>255){
+		neg_sum = ~(0xFF&sum);
+	}
+	uint8_t checksum = (uint8_t)neg_sum;
+	uint8_t tx_buf[10] = {0x55, 0x55, id, data_length, command_val, min_angle_low, min_angle_high, max_angle_low, max_angle_high, checksum};
 	HAL_UART_Transmit(huart, tx_buf, data_length + 3, 50);
 }
