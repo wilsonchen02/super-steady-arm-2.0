@@ -1,4 +1,4 @@
-#include "Servo.h"
+#include "servo.h"
 #include <vector>
 
 /* Constructor for servo
@@ -51,14 +51,18 @@ void Servo::read_limits() {
  */
 void Servo::write_angle(uint16_t angle, uint16_t time) {
 	// Return if input angles are invalid
-	if (angle > max_angle || angle < min_angle) {
+	if (angle > 1000 || angle < 0) {
 //		throw std::runtime_error("angle out of range");
 		return;
 	}
+	// Scale the angle to be between the min and max angle ranges
+	int16_t real_range = max_angle - min_angle;
+	uint16_t real_angle = min_angle + (angle / 1000.0) * real_range;
+
 //	float angle_ratio = angle / 1000.0;
 	// This should constrain sum to 16 bits
-	uint8_t angle_low = angle & 0xFF;
-	uint8_t angle_high = (angle >> 8) & 0xFF;
+	uint8_t angle_low = real_angle & 0xFF;
+	uint8_t angle_high = (real_angle >> 8) & 0xFF;
 	uint8_t time_low = time & 0xFF;
 	uint8_t time_high = (time >> 8) & 0xFF;
 	uint8_t data_length = 0x7;

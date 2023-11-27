@@ -1,6 +1,6 @@
 #include "main.h"
 #include "RoboticArm.h"
-#include "Servo.h"
+#include "servo.h"
 
 extern UART_HandleTypeDef huart1;
 
@@ -21,34 +21,25 @@ void init() {
 
 	robot_arm = std::make_unique<RoboticArm>();
 
-	robot_arm->add_servo(&huart1, 1, 282, 656);
+	robot_arm->add_servo(&huart1, 1, 300, 656);
 	robot_arm->add_servo(&huart1, 2, 0, 1000);
 	robot_arm->add_servo(&huart1, 3, 0, 900);
 	robot_arm->add_servo(&huart1, 4, 0, 1000);
-	robot_arm->add_servo(&huart1, 5, 0, 1000);
+	robot_arm->add_servo(&huart1, 5, 130, 840);
 	robot_arm->add_servo(&huart1, 6, 0, 1000);
 	HAL_Delay(1000);
 
-	robot_arm->servo[5]->write_angle(0, 0);
+//	for (size_t i = 0; i < robot_arm->servo.size(); ++i) {
+//		robot_arm->servo[i]->write_angle(0, 0);
+//		HAL_Delay(1000);
+//	}
+	robot_arm->servo[1]->write_angle(0, 0);
 	HAL_Delay(1000);
-	robot_arm->servo[5]->write_angle(1000, 0);
+	robot_arm->servo[1]->write_angle(500, 0);
 	HAL_Delay(1000);
-//	robot_arm->servo[0]->write_angle(282, 0);
-//	HAL_Delay(1000);
-//	robot_arm->servo[0]->write_angle(656, 0);
-//	HAL_Delay(1000);
-//	robot_arm->servo[1]->write_angle(63, 0);
-//	HAL_Delay(1000);
-//	robot_arm->servo[1]->write_angle(842, 0);
-//	HAL_Delay(1000);
-//	robot_arm->servo[2]->write_angle(0, 0);
-//	HAL_Delay(1000);
-//	robot_arm->servo[2]->write_angle(900, 0);
-//	HAL_Delay(1000);
-//	robot_arm->servo[2]->write_angle(810, 0);
-//	HAL_Delay(1000);
-
-//	robot_arm->servo[1]->read_limits();
+	robot_arm->servo[1]->write_angle(1000, 0);
+	HAL_Delay(1000);
+//	robot_arm->servo[4]->write_angle(135, 0);
 //	HAL_Delay(1000);
 }
 
@@ -58,6 +49,6 @@ void loop() {
 	//	servo[0].write_angle(656, 0);
 	//	HAL_Delay(1000);
 
-		robot_arm->servo[5]->read_angle();
+		robot_arm->servo[1]->read_angle();
 		HAL_Delay(1000);
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "main.h"
-#include "Servo.h"
+#include "servo.h"
 #include <stdint.h>
 #include <vector>
 #include <memory>
