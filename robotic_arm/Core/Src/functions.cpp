@@ -44,11 +44,9 @@ void init() {
 }
 
 void loop() {
-	//	servo[0].write_angle(282, 0);
-	//	HAL_Delay(1000);
-	//	servo[0].write_angle(656, 0);
-	//	HAL_Delay(1000);
+	robot_arm->set_all_angles(/*give me a vector*/);
+	HAL_Delay(50);
 
-		robot_arm->servo[1]->read_angle();
-		HAL_Delay(1000);
+	robot_arm->servo[1]->read_angle();
+	HAL_Delay(1000);
 }
