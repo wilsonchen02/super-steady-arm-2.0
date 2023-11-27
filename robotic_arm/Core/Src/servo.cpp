@@ -29,17 +29,29 @@ void Servo::read_angle() {
 	HAL_UART_Transmit(huart, tx_buf, data_length + 3, 50);
 }
 
+void Servo::read_limits() {
+	uint8_t data_length = 0x3;
+	uint8_t command_val = 21;
+	uint16_t sum = id + data_length + command_val;
+	uint16_t neg_sum = ~sum;
+	if (sum > 255){
+		neg_sum = ~(0xFF&sum);
+	}
+	uint8_t checksum = (uint8_t)neg_sum;
+	uint8_t tx_buf[6] = {0x55, 0x55, id, data_length, command_val, checksum};
+	HAL_UART_Transmit(huart, tx_buf, data_length + 3, 50);
+}
 
-/* Given an angle from range 0-1000 of the servo's software limits
- * and time it takes to get to that angle (between 0 - 30k ms),
+
+/* Given an input angle from range 0-1000, translate that to the servo's
+ * own range and set the time it takes to get to that angle (between 0 - 30k ms),
  * move the servo to the corresponding angle
- * @param servo_id: servo to move
  * @param angle: angle metric range 0-1000 that the servo is to go to
  * @param time: time between 0-30k ms that the servo takes to get to angle
  */
 void Servo::write_angle(uint16_t angle, uint16_t time) {
 	// Return if input angles are invalid
-	if (angle > 1000 || angle < 0) {
+	if (angle > max_angle || angle < min_angle) {
 //		throw std::runtime_error("angle out of range");
 		return;
 	}
@@ -54,8 +66,8 @@ void Servo::write_angle(uint16_t angle, uint16_t time) {
 	uint16_t sum = id + data_length + command_val + angle_low + angle_high;
 //	sum = ~(sum & 0xFF);
 	uint16_t neg_sum = ~sum;
-	if (sum>255){
-		neg_sum = ~(0xFF&sum);
+	if (sum > 255){
+		neg_sum = ~(0xFF & sum);
 	}
 	uint8_t checksum = (uint8_t)neg_sum;
 	uint8_t tx_buf[10] = {0x55, 0x55, id, data_length, command_val, angle_low, angle_high, 0x0, 0x0, checksum};
@@ -63,16 +75,16 @@ void Servo::write_angle(uint16_t angle, uint16_t time) {
 }
 
 /* Given servo ID and two angles from range 0-1000,
- * set the min and max angle limits
- * @param servo_id: servo to move
+ * set the min and max angle limits.
+ * NOTE: angle limits can be negative
  * @param min_angle: min angle for servo in range 0-1000
  * @param max_angle: max angle for servo in range 0-1000
  */
 void Servo::write_limits(uint16_t min_angle, uint16_t max_angle) {
 	// Return if input angles are invalid
-	if (min_angle > 1000 || min_angle < 0 || max_angle > 1000 || max_angle < 0) {
-		return;
-	}
+//	if (min_angle > 1000 || min_angle < 0 || max_angle > 1000 || max_angle < 0) {
+//		return;
+//	}
 
 	uint8_t min_angle_low = min_angle & 0xFF;
 	uint8_t min_angle_high = (min_angle >> 8) & 0xFF;
@@ -82,10 +94,14 @@ void Servo::write_limits(uint16_t min_angle, uint16_t max_angle) {
 	uint8_t command_val = 0x14;
 	uint16_t sum = id + data_length + command_val + min_angle_low + min_angle_high + max_angle_low + max_angle_high;
 	uint16_t neg_sum = ~sum;
-	if (sum>255){
-		neg_sum = ~(0xFF&sum);
+	if (sum > 255){
+		neg_sum = ~(0xFF & sum);
 	}
 	uint8_t checksum = (uint8_t)neg_sum;
 	uint8_t tx_buf[10] = {0x55, 0x55, id, data_length, command_val, min_angle_low, min_angle_high, max_angle_low, max_angle_high, checksum};
 	HAL_UART_Transmit(huart, tx_buf, data_length + 3, 50);
+
+	// Update min and max angle limits
+	this->min_angle = min_angle;
+	this->max_angle = max_angle;
 }

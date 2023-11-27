@@ -11,6 +11,7 @@
 class RoboticArm {
 public:
 	// Public variables
+	// TODO: place this in private after we integrate xbee
 	std::vector<std::unique_ptr<Servo>> servo;
 
 	// Constructor
@@ -23,7 +24,6 @@ public:
 	// TODO: function to read xbee vals and send write to servos
 	void read_xbee_angles();
 
-	// TODO: set all servo angles
 	void set_all_angles();
 
 private:

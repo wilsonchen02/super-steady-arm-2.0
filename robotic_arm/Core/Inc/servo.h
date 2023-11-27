@@ -13,6 +13,8 @@ public:
 	// Functions
 	void read_angle();
 
+	void read_limits();
+
 	void write_angle(uint16_t angle, uint16_t time);
 
 	void write_limits(uint16_t min_angle, uint16_t max_angle);
@@ -20,6 +22,6 @@ public:
 private:
 	UART_HandleTypeDef *huart;
 	uint8_t id;
-	uint16_t min_angle, max_angle;
+	int16_t min_angle, max_angle;
 
 };
