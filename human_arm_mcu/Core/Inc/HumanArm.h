@@ -3,6 +3,7 @@
 
 #include "IMU.h"
 #include "encoder.h"
+#include "xbee.h"
 #include <memory>
 
 struct SensorData {
