@@ -6,7 +6,7 @@
 #include "xbee.h"
 #include <memory>
 
-struct SensorData {
+struct __attribute__ ((__packed__)) SensorData {
 	float wrist_roll; 
 	float wrist_pitch;
 	float wrist_yaw; 
