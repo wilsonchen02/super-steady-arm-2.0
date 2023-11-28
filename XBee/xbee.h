@@ -14,9 +14,9 @@ private:
 public:
 	XBee(){uart_handle = NULL;};
 	XBee(UART_HandleTypeDef* uart_handle_in);
-	std::array<float, 3> getCommand();
-	std::array<float, 3> getCommand__Test();
-	int setCommand(uint8_t joint_ID, float angle); // humanarm class should be responsible for editing this
+	std::array<int, 6> getCommand();
+	std::array<int, 6> getCommand__Test();
+	int setCommand(uint8_t joint_ID, int angle); // humanarm class should be responsible for editing this
 };
 
 

@@ -1,7 +1,7 @@
 #include <xbee.h>
 #include <random>
-std::array<float, 6> XBee::getCommand__Test(){
-	std::array<float, 6> test_array;
+std::array<int, 6> XBee::getCommand__Test(){
+	std::array<int, 6> test_array;
 	std::default_random_engine generator;
 	std::normal_distribution<double> distribution(500.0,100.0);
 	for (size_t i=0; i<6; i++){
