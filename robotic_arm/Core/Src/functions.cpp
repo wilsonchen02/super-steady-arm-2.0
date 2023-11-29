@@ -44,7 +44,7 @@ void init() {
 }
 
 void loop() {
-	robot_arm->set_all_angles(/*give me a vector*/);
+//	robot_arm->set_all_angles(/*give me a vector*/);
 	HAL_Delay(50);
 
 	robot_arm->servo[1]->read_angle();
