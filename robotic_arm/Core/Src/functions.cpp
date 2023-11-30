@@ -6,18 +6,16 @@ extern UART_HandleTypeDef huart1;
 
 // for xbee receive
 extern UART_HandleTypeDef huart2;
+extern UART_HandleTypeDef huart6;
 
 extern  uint8_t xbee_buf[12];
 
 static std::unique_ptr<RoboticArm> robot_arm;
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 
-		HAL_UART_Receive_IT(&huart2, xbee_buf, 1);
-}
 
 void init() {
-	HAL_UART_Receive/*_IT*/(&huart2, xbee_buf, 1, 1000);
+	HAL_UART_Receive_DMA(&huart6, xbee_buf, 12);
 	//  uint8_t tx_buf[10] = {0x55, 0x55, 0x06, 0x07, 0x01, 0x1E, 0x88, 0x08, 0x00, 0x4B};
 	//  uint8_t tx_buf[4][10] = {
 	//  // 0 and 1000 for motor 6 joint A (like 70 degrees?)
