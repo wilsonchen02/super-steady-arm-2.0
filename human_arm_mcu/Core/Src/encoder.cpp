@@ -8,7 +8,7 @@ Encoder::Encoder(TIM_TypeDef *_tim): m_tim{_tim}{
 
 void Encoder::update_position() {
     uint16_t current_counts = m_tim->CNT;
-    printf("current_encoder_counts: %d\n", current_counts);
+    // printf("current_encoder_counts: %d\n", current_counts);
     //int delta = current_counts - m_prev_counts;
     m_prev_counts = current_counts;
 }
