@@ -7,13 +7,12 @@
 #include <memory>
 
 struct __attribute__ ((__packed__)) SensorData {
-	float wrist_roll; 
-	float wrist_pitch;
-	float wrist_yaw; 
-	float enc_angle;
-	float shoulder_roll;
-	float shoulder_pitch;
-	float shoulder_yaw;
+	uint16_t servo0;
+	uint16_t servo1;
+	uint16_t servo2;
+	uint16_t servo3;
+	uint16_t servo4;
+	uint16_t servo5;
 };
 
 class HumanArm {

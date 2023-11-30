@@ -105,6 +105,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  HAL_StatusTypeDef error;
 
   while (1)
   {
