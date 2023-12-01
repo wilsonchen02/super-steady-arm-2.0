@@ -25,10 +25,10 @@ int HumanArm::spin(){
 
 int HumanArm::pack_message(std::vector<float> wrist_configuration, float enc_cur_angle, std::vector<float> shoulder_configuration, int gripper_angle){
 	//printf("current_encoder_angle: %f\n", enc_cur_angle);
+	sensor_info.gripper 		= gripper_angle;
 	sensor_info.wrist_roll 		= wrist_configuration[0];
 	sensor_info.wrist_pitch		= wrist_configuration[1];
-	sensor_info.gripper 		= gripper_angle;
-	sensor_info.enc_angle 		= enc_cur_angle;
+	sensor_info.elbow 			= enc_cur_angle;
 	sensor_info.shoulder_pitch 	= shoulder_configuration[1];
 	sensor_info.shoulder_yaw 	= shoulder_configuration[2];
 	return 0;
@@ -48,4 +48,5 @@ int HumanArm::send_message(){
 
 int HumanArm::setFlexSensorResistance(uint16_t adc_val){
 	flex_sensor->setResistance(adc_val);
+	return 0;
 }

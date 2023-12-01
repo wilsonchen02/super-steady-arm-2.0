@@ -11,9 +11,9 @@ struct __attribute__ ((__packed__)) SensorData {
 	int gripper;
 	int wrist_roll;
 	int wrist_pitch;
-	int enc_angle;
-	int shoulder_pitch;
-	int shoulder_yaw;
+	int elbow;
+	int shoulder_pitch; // controlled directly by pitch
+	int shoulder_yaw;// joint A is controlled by a combination of roll and yaw
 };
 
 class HumanArm {

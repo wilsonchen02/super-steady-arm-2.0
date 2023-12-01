@@ -16,6 +16,11 @@ float flexSensor::getResistance(){
 }
 
 
+const int& flexSensor::clamp(const int& v, const int& lo, const int& hi) {
+	return v < lo ? lo : hi  <  v ? hi : v;
+}
+
 uint16_t flexSensor::getResistanceAndScale(){
-	return (curr_resistance-FLEX_SENSOR_FLAT_RESISTANCE)/150;
+	uint16_t scaled_res = (curr_resistance-FLEX_SENSOR_FLAT_RESISTANCE)/150;
+	return clamp(scaled_res, 0, 1000);
 }

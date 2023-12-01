@@ -19,6 +19,7 @@
 class flexSensor{
 private:
 	float curr_resistance;
+	const int& clamp(const int& v, const int& lo, const int& hi);
 
 public:
 	flexSensor(ADC_HandleTypeDef* hadc1);

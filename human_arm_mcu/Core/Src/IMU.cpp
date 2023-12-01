@@ -16,10 +16,10 @@ IMU::IMU(I2C_HandleTypeDef* i2c_handle_in, uint8_t address): i2c_handle{i2c_hand
 
 
   uint8_t unitsel = (0 << 7) | // Orientation = Android
-					  (0 << 4) | // Temperature = Celsius
-					  (0 << 2) | // Euler = Degrees
-					  (1 << 1) | // Gyro = Rads
-					  (0 << 0);  // Accelerometer = m/s^2
+					(0 << 4) | // Temperature = Celsius
+					(0 << 2) | // Euler = Degrees
+					(1 << 1) | // Gyro = Rads
+					(0 << 0);  // Accelerometer = m/s^2
   uint8_t unit_sel[2] = {BNO055_UNIT_SEL_ADDR, unitsel};
   HAL_I2C_Master_Transmit(i2c_handle, address<<1, unit_sel, sizeof(unit_sel), 5);
   HAL_Delay(2);
