@@ -18,3 +18,8 @@ float Encoder::get_position() {
     // current position in angles
     return ((float)m_prev_counts / 10000.0) * 360.0;
 }
+
+
+uint16_t get_position_and_scale(){
+	return ((uint16_t)get_position())*(1000/360);
+}

@@ -11,19 +11,19 @@ int HumanArm::init(){
 }
 
 int HumanArm::spin(){
-	float enc_cur_angle = elbow_encoder->get_position();
-	int gripper_config = flex_sensor->getResistanceAndScale();
-	std::vector<float> wrist_configuration;
-	wrist_IMU->getEulerAngles(wrist_configuration);
-	std::vector<float> shoulder_configuration;
-	shoulder_IMU->getEulerAngles(shoulder_configuration);
+	uint16_t enc_cur_angle = elbow_encoder->get_position_and_scale();
+	uint16_t gripper_config = flex_sensor->getResistanceAndScale();
+	std::vector<uint16_t> wrist_configuration;
+	wrist_IMU->getEulerAnglesAndScale(wrist_configuration);
+	std::vector<uint16_t> shoulder_configuration;
+	shoulder_IMU->getEulerAnglesAndScale(shoulder_configuration);
 
 	pack_message(wrist_configuration, enc_cur_angle, shoulder_configuration, gripper_config);
 	send_message();
 	return 0;
 }
 
-int HumanArm::pack_message(std::vector<float> wrist_configuration, float enc_cur_angle, std::vector<float> shoulder_configuration, int gripper_angle){
+int HumanArm::pack_message(std::vector<uint16_t> wrist_configuration, uint16_t enc_cur_angle, std::vector<uint16_t> shoulder_configuration, uint16_t gripper_angle){
 	//printf("current_encoder_angle: %f\n", enc_cur_angle);
 	sensor_info.gripper 		= gripper_angle;
 	sensor_info.wrist_roll 		= wrist_configuration[0];
@@ -40,7 +40,7 @@ int HumanArm::send_message(){
 	uint8_t* buf_tx = reinterpret_cast<uint8_t*>(&sensor_info);
 	// TODO: maybe timeout shouldn't be UINT32_max long
 	// TODO: currently this is blocking. could use nonblockng ..._Transmit_IT instead
-	printf("val1:%d, val2:%d, val3:%d, val4:%d, val5:%d, val6:%d\n", sensor_info.gripper, sensor_info.gripper, sensor_info.gripper, sensor_info.gripper, sensor_info.gripper, sensor_info.gripper);
+	//printf("val1:%d, val2:%d, val3:%d, val4:%d, val5:%d, val6:%d\n", sensor_info.gripper, sensor_info.wrist_roll, sensor_info.wrist_pitch, sensor_info.elbow, sensor_info.shoulder_pitch, sensor_info.shoulder_yaw);
 	//HAL_UART_Transmit(UART_handle, buf_tx, 28, UINT32_MAX);
 	return 0;
 }

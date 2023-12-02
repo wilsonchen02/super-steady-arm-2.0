@@ -52,6 +52,7 @@ public:
 
 
 	void getEulerAngles(std::vector<float> &eulerAngles);
+	void getEulerAnglesAndScale(std::vector<uint16_t> &eulerAngles);
 
 
 

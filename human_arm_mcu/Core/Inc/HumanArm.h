@@ -40,7 +40,7 @@ private:
 	UART_HandleTypeDef * UART_handle;
 	ADC_HandleTypeDef* ADC_handle;
 
-	int pack_message(std::vector<float> wrist_configuration, float enc_cur_angle, std::vector<float> shoulder_configuration, int gripper_angle);
+	int pack_message(std::vector<uint16_t> wrist_configuration, uint16_t enc_cur_angle, std::vector<uint16_t> shoulder_configuration, uint16_t gripper_angle);
 	int send_message();
 
 	SensorData sensor_info;
