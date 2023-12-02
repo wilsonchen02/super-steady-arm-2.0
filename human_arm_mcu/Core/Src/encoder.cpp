@@ -20,6 +20,6 @@ float Encoder::get_position() {
 }
 
 
-uint16_t get_position_and_scale(){
+uint16_t Encoder::get_position_and_scale(){
 	return ((uint16_t)get_position())*(1000/360);
 }

@@ -11,14 +11,14 @@ int HumanArm::init(){
 }
 
 int HumanArm::spin(){
-	uint16_t enc_cur_angle = elbow_encoder->get_position_and_scale();
+	uint16_t encoderScaledAngle = elbow_encoder->get_position_and_scale();
 	uint16_t gripper_config = flex_sensor->getResistanceAndScale();
 	std::vector<uint16_t> wrist_configuration;
 	wrist_IMU->getEulerAnglesAndScale(wrist_configuration);
 	std::vector<uint16_t> shoulder_configuration;
 	shoulder_IMU->getEulerAnglesAndScale(shoulder_configuration);
 
-	pack_message(wrist_configuration, enc_cur_angle, shoulder_configuration, gripper_config);
+	pack_message(wrist_configuration, encoderScaledAngle, shoulder_configuration, gripper_config);
 	send_message();
 	return 0;
 }
@@ -36,10 +36,10 @@ int HumanArm::pack_message(std::vector<uint16_t> wrist_configuration, uint16_t e
 
 int HumanArm::send_message(){
 	// Sending 6 * 2 (uint16_t) bytes
-	SensorData sensor_info_test = {0xFF33, 0xEE11, 0xDD22, 0xCC33, 0xBB44, 0xAA55};
-	uint8_t* buf_tx = reinterpret_cast<uint8_t*>(&sensor_info_test);
+	//SensorData sensor_info_test = {0xFF33, 0xEE11, 0xDD22, 0xCC33, 0xBB44, 0xAA55};
+	uint8_t* buf_tx = reinterpret_cast<uint8_t*>(&sensor_info);
 	//printf("val1:%d, val2:%d, val3:%d, val4:%d, val5:%d, val6:%d\n", sensor_info.gripper, sensor_info.wrist_roll, sensor_info.wrist_pitch, sensor_info.elbow, sensor_info.shoulder_pitch, sensor_info.shoulder_yaw);
-	//HAL_UART_Transmit(UART_handle, buf_tx, 12, UINT32_MAX);
+	HAL_UART_Transmit(UART_handle, buf_tx, 12, UINT32_MAX);
 	return 0;
 }
 
