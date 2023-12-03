@@ -15,6 +15,7 @@ class Encoder {
     public:
     Encoder(TIM_TypeDef *_tim);
     float get_position();
+    uint16_t get_position_and_scale();
 
     private:
     void update_position();
