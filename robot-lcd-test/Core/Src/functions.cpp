@@ -1,36 +1,25 @@
 #include "main.h"
 #include "lcd.h"
 #include <stdint.h>
-#include <memory>
 #include <string>
+#include <memory>
 
 extern I2C_HandleTypeDef hi2c1;
 
 static std::unique_ptr<LCD> lcd;
+static uint16_t test_buf[6] = {0, 100, 200, 300, 500, 1000};
 
 void init() {
 	lcd = std::make_unique<LCD>(&hi2c1);
-	HAL_Delay(50);
 
-//	char data_buf[] = "A";
-	lcd->send_data("A");
-	HAL_Delay(50);
-	lcd->set_cursor(1, 0);
-//	data_buf = "bingbong";
-	HAL_Delay(50);
-	lcd->send_data("bingbong");
-	HAL_Delay(50);
-	lcd->clear_screen();
-	HAL_Delay(50);
-	lcd->set_cursor(3, 0);
-//	data_buf = "blop";
-	lcd->send_data("blop");
-	HAL_Delay(50);
-	lcd->set_cursor(0, 3);
-	lcd->send_data("blung");
+	HAL_Delay(500);
+	lcd->init_servo_labels();
+	HAL_Delay(500);
 
 }
 
 void loop() {
-
+	test_buf[0]++;
+	lcd->send_servo_angles(test_buf);
+	HAL_Delay(2000);
 }

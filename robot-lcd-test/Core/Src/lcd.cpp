@@ -72,7 +72,7 @@ void LCD::send_byte(const char data) {
 	HAL_I2C_Master_Transmit(hi2c, LCD_I2C_ADDR, (uint8_t *)data_buf, 4, 100);
 }
 
-/* Send an array of data to the LCD
+/* Send a string of data to the LCD
  * @param data: string to be printed on LCD
  */
 void LCD::send_data(std::string data) {
@@ -82,6 +82,105 @@ void LCD::send_data(std::string data) {
 	}
 }
 
+void LCD::init_servo_labels() {
+	std::string s0 = "Robotic Arm Angles";
+	std::string s1 = "grip ";
+	std::string s2 = "elbo ";
+	std::string s3 = "wr_R ";
+	std::string s4 = "wr_P ";
+	std::string s5 = "sh_P ";
+	std::string s6 = "sh_Y ";
+
+	clear_screen();
+	HAL_Delay(100);
+
+	// Information header on the first line
+	set_cursor(0, 0);
+	HAL_Delay(100);
+	send_data(s0);
+	HAL_Delay(100);
+
+	// Row 1
+	set_cursor(1, 0);
+	HAL_Delay(100);
+	send_data(s1);
+	HAL_Delay(100);
+	set_cursor(1, 10);
+	HAL_Delay(100);
+	send_data(s2);
+	HAL_Delay(100);
+
+	// Row 2
+	set_cursor(2, 0);
+	HAL_Delay(100);
+	send_data(s3);
+	HAL_Delay(100);
+	set_cursor(2, 10);
+	HAL_Delay(100);
+	send_data(s4);
+	HAL_Delay(100);
+
+	// Row 3
+	set_cursor(3, 0);
+	HAL_Delay(100);
+	send_data(s5);
+	HAL_Delay(100);
+	set_cursor(3, 10);
+	HAL_Delay(100);
+	send_data(s6);
+	HAL_Delay(100);
+}
+
+/* Send all servo angles to LCD
+ * @param arr: pointer to starting element of array
+ * @param arr_length: length of array
+ */
+void LCD::send_servo_angles(uint16_t arr[6]) {
+	// Convert uint16_t to string
+	std::string str_arr[6];
+	for(int i = 0; i < 6; ++i) {
+		str_arr[i] = std::to_string(arr[i]);
+	}
+
+	// Pad front of string with spaces
+	size_t n_zero = 4;
+	std::string s1 = std::string(n_zero - std::min(n_zero, str_arr[0].length()), ' ') + str_arr[0];
+	std::string s2 = std::string(n_zero - std::min(n_zero, str_arr[3].length()), ' ') + str_arr[3];
+	std::string s3 = std::string(n_zero - std::min(n_zero, str_arr[1].length()), ' ') + str_arr[1];
+	std::string s4 = std::string(n_zero - std::min(n_zero, str_arr[2].length()), ' ') + str_arr[2];
+	std::string s5 = std::string(n_zero - std::min(n_zero, str_arr[4].length()), ' ') + str_arr[4];
+	std::string s6 = std::string(n_zero - std::min(n_zero, str_arr[5].length()), ' ') + str_arr[5];
+
+	// Row 1
+	set_cursor(1, 5);
+	HAL_Delay(100);
+	send_data(s1);
+	HAL_Delay(100);
+	set_cursor(1, 15);
+	HAL_Delay(100);
+	send_data(s2);
+	HAL_Delay(100);
+
+	// Row 2
+	set_cursor(2, 5);
+	HAL_Delay(100);
+	send_data(s3);
+	HAL_Delay(100);
+	set_cursor(2, 15);
+	HAL_Delay(100);
+	send_data(s4);
+	HAL_Delay(100);
+
+	// Row 3
+	set_cursor(3, 5);
+	HAL_Delay(100);
+	send_data(s5);
+	HAL_Delay(100);
+	set_cursor(3, 15);
+	HAL_Delay(100);
+	send_data(s6);
+	HAL_Delay(100);
+}
 /* Wipes the screen
  */
 void LCD::clear_screen() {
