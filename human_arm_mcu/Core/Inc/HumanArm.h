@@ -8,12 +8,17 @@
 #include <memory>
 
 struct __attribute__ ((__packed__)) SensorData {
-	int gripper;
-	int wrist_roll;
-	int wrist_pitch;
-	int elbow;
-	int shoulder_pitch; // controlled directly by pitch
-	int shoulder_yaw;// joint A is controlled by a combination of roll and yaw
+	uint16_t gripper;
+	uint16_t wrist_roll;
+	uint16_t wrist_pitch;
+	uint16_t elbow;
+	uint16_t shoulder_pitch; // controlled directly by pitch
+	uint16_t shoulder_yaw;// joint A is controlled by a combination of roll and yaw
+};
+
+union SensorData_u {
+	SensorData data_struct;
+	uint8_t bytes[sizeof(SensorData)];
 };
 
 class HumanArm {
@@ -43,7 +48,7 @@ private:
 	int pack_message(std::vector<uint16_t> wrist_configuration, uint16_t enc_cur_angle, std::vector<uint16_t> shoulder_configuration, uint16_t gripper_angle);
 	int send_message();
 
-	SensorData sensor_info;
+	SensorData_u sensor_info;
 
 };
 
