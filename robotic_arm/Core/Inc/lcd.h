@@ -11,8 +11,9 @@
 */
 
 #include "stm32f4xx_hal.h"
-#include <string>
 #include <algorithm>
+#include <string>
+#include <vector>
 
 #define LCD_I2C_ADDR 0x4E // LSB = 0
 
@@ -65,7 +66,7 @@ public:
 
 	void init_servo_labels();
 
-	void send_servo_angles(uint16_t arr[6]);
+	void send_servo_angles(const std::vector<uint16_t> &arr);
 
 	void clear_screen();
 

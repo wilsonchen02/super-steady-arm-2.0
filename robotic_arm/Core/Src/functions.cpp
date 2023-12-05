@@ -1,6 +1,7 @@
 #include "main.h"
 #include "RoboticArm.h"
 #include "servo.h"
+#include "lcd.h"
 
 extern UART_HandleTypeDef huart1;
 
@@ -12,9 +13,10 @@ extern xbee_buff_t xbee_buff;
 
 // For LCD transmit
 extern I2C_HandleTypeDef hi2c1;
+extern TIM_HandleTypeDef htim10;
 static std::unique_ptr<LCD> lcd;
-static uint16_t lcd_buf[6];
 
+// Robotic arm object
 static std::unique_ptr<RoboticArm> robot_arm;
 
 void init() {
@@ -35,11 +37,15 @@ void init() {
 
 	// Initialize LCD
 	lcd = std::make_unique<LCD>(&hi2c1);
+
 	HAL_Delay(100);
 	lcd->clear_screen();
 	HAL_Delay(100);
 	lcd->init_servo_labels();
 	HAL_Delay(100);
+
+	// Start timer
+	HAL_TIM_Base_Start_IT(&htim10);
 
 //	robot_arm->servo[1]->write_angle(0, 0);
 //	HAL_Delay(1000);
@@ -58,7 +64,15 @@ void loop() {
 	HAL_Delay(50);
 //	robot_arm->servo[2]->read_angle();
 //	HAL_Delay(1000);
+}
 
-	// Update LCD values
-	lcd->send_servo_angles(lcd_buf);
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  if (htim == &htim10)
+  {
+	  std::vector<uint16_t> lcd_buf(std::begin(xbee_buff.xbee_buf_16), std::end(xbee_buff.xbee_buf_16));
+	  lcd->send_servo_angles(lcd_buf);
+//	  std::vector<uint16_t> test_buf{0, 10, 500, 1000, 341, 6};
+//	  lcd->send_servo_angles(test_buf);
+  }
 }
