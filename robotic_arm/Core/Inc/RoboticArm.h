@@ -2,8 +2,10 @@
 
 #include "main.h"
 #include "servo.h"
+#include "lcd.h"
 #include <stdint.h>
 #include <vector>
+#include <string>
 #include <memory>
 
 #define NUM_SERVOS 6

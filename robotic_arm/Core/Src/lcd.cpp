@@ -57,7 +57,6 @@ void LCD::send_command(char cmd) {
 	cmd_buf[2] = data_l | 0x0C;
 	cmd_buf[3] = data_l | 0x08;
 
-//	HAL_I2C_Master_Transmit_IT(hi2c, LCD_I2C_ADDR, (uint8_t *)cmd_buf, 4);
 	HAL_I2C_Master_Transmit(hi2c, LCD_I2C_ADDR, (uint8_t *)cmd_buf, 4, 100);
 }
 
@@ -75,7 +74,6 @@ void LCD::send_byte(const char data) {
 	data_buf[2] = data_l | 0x0D;
 	data_buf[3] = data_l | 0x09;
 
-//	HAL_I2C_Master_Transmit_IT(hi2c, LCD_I2C_ADDR, (uint8_t *)data_buf, 4);
 	HAL_I2C_Master_Transmit(hi2c, LCD_I2C_ADDR, (uint8_t *)data_buf, 4, 100);
 }
 
