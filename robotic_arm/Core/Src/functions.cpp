@@ -27,7 +27,7 @@ void init() {
 
 //	servo.emplace_back(std::make_unique<Servo>(&huart1, 1, 282, 656));
 //	servo.emplace_back(std::make_unique<Servo>(&huart1, 2, 63, 842));
-
+	Eigen::AngleAxisd rollAngle(0, Eigen::Vector3d::UnitZ());
 	robot_arm = std::make_unique<RoboticArm>();
 
 	robot_arm->add_servo(&huart1, 1, 300, 656);
@@ -42,12 +42,12 @@ void init() {
 //		robot_arm->servo[i]->write_angle(0, 0);
 //		HAL_Delay(1000);
 //	}
-	robot_arm->servo[1]->write_angle(0, 0);
-	HAL_Delay(1000);
-	robot_arm->servo[1]->write_angle(500, 0);
-	HAL_Delay(1000);
-	robot_arm->servo[1]->write_angle(1000, 0);
-	HAL_Delay(1000);
+//	robot_arm->servo[1]->write_angle(0, 0);
+//	HAL_Delay(1000);
+//	robot_arm->servo[1]->write_angle(500, 0);
+//	HAL_Delay(1000);
+//	robot_arm->servo[1]->write_angle(1000, 0);
+//	HAL_Delay(1000);
 //	robot_arm->servo[4]->write_angle(135, 0);
 //	HAL_Delay(1000);
 }

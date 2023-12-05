@@ -32,9 +32,9 @@ void IMU::getEulerAngles(std::vector<float> &eulerAngles){
 	int16_t yaw = ((int16_t)euler_angles[0]) | (((int16_t)euler_angles[1]) << 8);
 	int16_t roll = ((int16_t)euler_angles[2]) | (((int16_t)euler_angles[3]) << 8);
 	int16_t pitch = ((int16_t)euler_angles[4]) | (((int16_t)euler_angles[5]) << 8);
-	eulerAngles.push_back(roll/16.0);
-	eulerAngles.push_back(pitch/16.0);
-	eulerAngles.push_back(yaw/16.0);
+	eulerAngles.push_back(-1 * roll/16.0);
+	eulerAngles.push_back(-1 * pitch/16.0);
+	eulerAngles.push_back(360.0 - yaw/16.0);
 
 }
 static bool inRange(double low, double high, double x)

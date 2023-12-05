@@ -5,6 +5,7 @@
 #include "encoder.h"
 #include "xbee.h"
 #include "flexSensor.h"
+#include "helper_functions.h"
 #include <memory>
 
 struct __attribute__ ((__packed__)) SensorData {
@@ -39,6 +40,7 @@ private:
 	std::unique_ptr<IMU> shoulder_IMU;
 	std::unique_ptr<Encoder> elbow_encoder;
 	std::unique_ptr<flexSensor> flex_sensor;
+	std::unique_ptr<Eigen::Matrix3f> global_frame;
 
 	I2C_HandleTypeDef* I2C_handle;
 	TIM_TypeDef* TIM_handle;

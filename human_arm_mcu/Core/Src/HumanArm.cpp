@@ -1,24 +1,44 @@
 #include <HumanArm.h>
 #include <stdio.h>
 
-
 int HumanArm::init(){
 	this->wrist_IMU = std::make_unique<IMU>(I2C_handle, IMU_ADDR_LO);
 	this->shoulder_IMU = std::make_unique<IMU>(I2C_handle, IMU_ADDR_HI);
 	this->elbow_encoder = std::make_unique<Encoder>(TIM_handle);
 	this->flex_sensor = std::make_unique<flexSensor>(ADC_handle);
+	// wait for sensor initialization
+	HAL_Delay(1000);
+
+	std::vector<float> shoulder_configuration;
+	shoulder_IMU->getEulerAngles(shoulder_configuration);
+
+	// The first pose of the shoulder in the magnetic field frame is the global frame
+	this->global_frame = std::make_unique<Eigen::Matrix3f>(eulers_to_rot_mat(shoulder_configuration).transpose());
 	return 0;
 }
 
 int HumanArm::spin(){
-	uint16_t encoderScaledAngle = elbow_encoder->get_position_and_scale();
-	uint16_t gripper_config = flex_sensor->getResistanceAndScale();
-	std::vector<uint16_t> wrist_configuration;
-	wrist_IMU->getEulerAnglesAndScale(wrist_configuration);
+	std::vector<float> shoulder_angles;
+	shoulder_IMU->getEulerAngles(shoulder_angles);
+	Eigen::Matrix3f shoulder_in_w = *this->global_frame * eulers_to_rot_mat(shoulder_angles);
 	std::vector<uint16_t> shoulder_configuration;
-	shoulder_IMU->getEulerAnglesAndScale(shoulder_configuration);
+	rot_mat_to_euler_and_scale(shoulder_in_w, shoulder_configuration);
 
-	pack_message(wrist_configuration, encoderScaledAngle, shoulder_configuration, gripper_config);
+	float encoderAngle = elbow_encoder->get_position();
+	std::vector<float> encoder_angles = {shoulder_angles[0], shoulder_angles[1], shoulder_angles[2] + encoderAngle};
+	Eigen::Matrix3f encoder_in_w = *this->global_frame * eulers_to_rot_mat(encoder_angles);
+	std::vector<uint16_t> elbow_configuration;
+	rot_mat_to_euler_and_scale(encoder_in_w, elbow_configuration);
+
+	std::vector<float> wrist_angles;
+	wrist_IMU->getEulerAngles(wrist_angles);
+	Eigen::Matrix3f wrist_in_w = encoder_in_w.transpose() * eulers_to_rot_mat(wrist_angles);
+	std::vector<uint16_t> wrist_configuration;
+	rot_mat_to_euler_and_scale(wrist_in_w, wrist_configuration);
+
+	uint16_t gripper_config = flex_sensor->getResistanceAndScale();
+
+	pack_message(wrist_configuration, elbow_configuration[2], shoulder_configuration, gripper_config);
 	send_message();
 	return 0;
 }

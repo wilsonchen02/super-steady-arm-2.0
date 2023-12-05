@@ -16,7 +16,7 @@ void Encoder::update_position() {
 float Encoder::get_position() {
     update_position();
     // current position in angles
-    return ((float)m_prev_counts / 10000.0) * 360.0;
+    return 360.0 - ((float)m_prev_counts / 10000.0) * 360.0;
 }
 
 
