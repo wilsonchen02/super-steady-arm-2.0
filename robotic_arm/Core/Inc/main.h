@@ -36,7 +36,11 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
+union xbee_buff_t{
+	uint8_t xbee_buf_8[12];
+	uint16_t xbee_buf_16[6];
 
+};
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
