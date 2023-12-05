@@ -1,5 +1,10 @@
 #include "lcd.h"
 
+/* NOTE: Sometimes, the lcd has to be flashed twice if
+ * it was off previously.
+ * Otherwise, it will spit gibberish on the screen
+*/
+
 // Will do initialization in the constructor too.
 // This initialization process comes from the TC2004A datasheet
 LCD::LCD(I2C_HandleTypeDef *hi2c_in) :
@@ -96,39 +101,25 @@ void LCD::init_servo_labels() {
 
 	// Information header on the first line
 	set_cursor(0, 0);
-	HAL_Delay(100);
 	send_data(s0);
-	HAL_Delay(100);
 
 	// Row 1
 	set_cursor(1, 0);
-	HAL_Delay(100);
 	send_data(s1);
-	HAL_Delay(100);
 	set_cursor(1, 10);
-	HAL_Delay(100);
 	send_data(s2);
-	HAL_Delay(100);
 
 	// Row 2
 	set_cursor(2, 0);
-	HAL_Delay(100);
 	send_data(s3);
-	HAL_Delay(100);
 	set_cursor(2, 10);
-	HAL_Delay(100);
 	send_data(s4);
-	HAL_Delay(100);
 
 	// Row 3
 	set_cursor(3, 0);
-	HAL_Delay(100);
 	send_data(s5);
-	HAL_Delay(100);
 	set_cursor(3, 10);
-	HAL_Delay(100);
 	send_data(s6);
-	HAL_Delay(100);
 }
 
 /* Send all servo angles to LCD
@@ -153,34 +144,23 @@ void LCD::send_servo_angles(uint16_t arr[6]) {
 
 	// Row 1
 	set_cursor(1, 5);
-	HAL_Delay(100);
 	send_data(s1);
-	HAL_Delay(100);
 	set_cursor(1, 15);
-	HAL_Delay(100);
 	send_data(s2);
-	HAL_Delay(100);
 
 	// Row 2
 	set_cursor(2, 5);
-	HAL_Delay(100);
 	send_data(s3);
-	HAL_Delay(100);
 	set_cursor(2, 15);
-	HAL_Delay(100);
 	send_data(s4);
-	HAL_Delay(100);
 
 	// Row 3
 	set_cursor(3, 5);
-	HAL_Delay(100);
 	send_data(s5);
-	HAL_Delay(100);
 	set_cursor(3, 15);
-	HAL_Delay(100);
 	send_data(s6);
-	HAL_Delay(100);
 }
+
 /* Wipes the screen
  */
 void LCD::clear_screen() {

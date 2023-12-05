@@ -13,13 +13,14 @@ void init() {
 	lcd = std::make_unique<LCD>(&hi2c1);
 
 	HAL_Delay(500);
+	lcd->clear_screen();
+	HAL_Delay(500);
 	lcd->init_servo_labels();
 	HAL_Delay(500);
-
 }
 
 void loop() {
 	test_buf[0]++;
 	lcd->send_servo_angles(test_buf);
-	HAL_Delay(2000);
+	HAL_Delay(1000);
 }
