@@ -21,5 +21,12 @@ float Encoder::get_position() {
 
 
 uint16_t Encoder::get_position_and_scale(){
-	return ((uint16_t)get_position())*(1000/360);
+	uint16_t output = 360 - ((uint16_t)get_position());
+	uint16_t output_scaled = 700;
+	if (output >=250){
+		output_scaled = (output-250)*(700/110);
+	}
+
+
+	return output_scaled;
 }

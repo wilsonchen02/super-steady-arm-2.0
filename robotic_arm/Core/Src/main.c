@@ -47,8 +47,7 @@ UART_HandleTypeDef huart6;
 DMA_HandleTypeDef hdma_usart6_rx;
 
 /* USER CODE BEGIN PV */
-uint8_t xbee_buf[12];
-
+union xbee_buff_t xbee_buff;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -66,7 +65,7 @@ static void MX_USART6_UART_Init(void);
 /* USER CODE BEGIN 0 */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 
-		HAL_UART_Receive_DMA(&huart6, xbee_buf, 12);
+		HAL_UART_Receive_DMA(&huart6, xbee_buff.xbee_buf_8, 12);
 }
 
 /* USER CODE END 0 */

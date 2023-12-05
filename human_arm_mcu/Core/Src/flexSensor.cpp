@@ -22,5 +22,6 @@ const int& flexSensor::clamp(const int& v, const int& lo, const int& hi) {
 
 uint16_t flexSensor::getResistanceAndScale(){
 	uint16_t scaled_res = (curr_resistance-FLEX_SENSOR_FLAT_RESISTANCE)/150;
-	return clamp(scaled_res, 0, 1000);
+	uint16_t scaled_and_clamped = clamp(scaled_res, 0, 1000);
+	return (scaled_and_clamped >=500)?1000:0;
 }
