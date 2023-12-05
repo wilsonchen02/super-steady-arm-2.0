@@ -27,8 +27,7 @@ int HumanArm::spin(){
 	float encoderAngle = elbow_encoder->get_position();
 	std::vector<float> encoder_angles = {shoulder_angles[0], shoulder_angles[1], shoulder_angles[2] + encoderAngle};
 	Eigen::Matrix3f encoder_in_w = *this->global_frame * eulers_to_rot_mat(encoder_angles);
-	std::vector<uint16_t> elbow_configuration;
-	rot_mat_to_euler_and_scale(encoder_in_w, elbow_configuration);
+	uint16_t scaled_encoder_angle = elbow_encoder->get_position_and_scale();
 
 	std::vector<float> wrist_angles;
 	wrist_IMU->getEulerAngles(wrist_angles);
@@ -38,7 +37,7 @@ int HumanArm::spin(){
 
 	uint16_t gripper_config = flex_sensor->getResistanceAndScale();
 
-	pack_message(wrist_configuration, elbow_configuration[2], shoulder_configuration, gripper_config);
+	pack_message(wrist_configuration, scaled_encoder_angle, shoulder_configuration, gripper_config);
 	send_message();
 	return 0;
 }
