@@ -13,8 +13,8 @@ struct __attribute__ ((__packed__)) SensorData {
 	uint16_t wrist_roll;
 	uint16_t wrist_pitch;
 	uint16_t elbow;
-	uint16_t shoulder_pitch; // controlled directly by pitch
-	uint16_t shoulder_yaw;// joint A is controlled by a combination of roll and yaw
+	uint16_t shoulder_roll;
+	uint16_t shoulder_yaw;
 };
 
 union SensorData_u {
@@ -49,6 +49,7 @@ private:
 
 	int pack_message(std::vector<uint16_t> wrist_configuration, uint16_t enc_cur_angle, std::vector<uint16_t> shoulder_configuration, uint16_t gripper_angle);
 	int send_message();
+	const float& clamp(const float& v, const float& lo, const float& hi);
 
 	SensorData_u sensor_info;
 

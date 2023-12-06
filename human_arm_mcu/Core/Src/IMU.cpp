@@ -26,21 +26,30 @@ IMU::IMU(I2C_HandleTypeDef* i2c_handle_in, uint8_t address): i2c_handle{i2c_hand
   HAL_Delay(2);
 }
 
+static bool inRange(double low, double high, double x)
+{
+ return (low <= x && x <= high);
+}
+
 void IMU::getEulerAngles(std::vector<float> &eulerAngles){
 	uint8_t euler_angles[6];
-	HAL_I2C_Mem_Read(i2c_handle, address<<1, BNO055_EULER_START_ADDR, I2C_MEMADD_SIZE_8BIT, euler_angles, 6, 30);
-	int16_t yaw = ((int16_t)euler_angles[0]) | (((int16_t)euler_angles[1]) << 8);
-	int16_t roll = ((int16_t)euler_angles[2]) | (((int16_t)euler_angles[3]) << 8);
-	int16_t pitch = ((int16_t)euler_angles[4]) | (((int16_t)euler_angles[5]) << 8);
+	int16_t roll = 0;
+	int16_t pitch = 0;
+	int16_t yaw = 0;
+
+	do {
+		HAL_I2C_Mem_Read(i2c_handle, address<<1, BNO055_EULER_START_ADDR, I2C_MEMADD_SIZE_8BIT, euler_angles, 6, 30);
+		yaw = ((int16_t)euler_angles[0]) | (((int16_t)euler_angles[1]) << 8);
+		roll = ((int16_t)euler_angles[2]) | (((int16_t)euler_angles[3]) << 8);
+		pitch = ((int16_t)euler_angles[4]) | (((int16_t)euler_angles[5]) << 8);
+	}while((!(inRange(0.0, 360, yaw/16.0))) || (!(inRange(-180, 180, pitch/16.0))) || (!(inRange(-90, 90, roll/16.0))));
+//	printf("yrp: %f %f %f\n", yaw/16.0, roll/16.0, pitch/16.0);
 	eulerAngles.push_back(-1 * roll/16.0);
 	eulerAngles.push_back(-1 * pitch/16.0);
 	eulerAngles.push_back(360.0 - yaw/16.0);
 
 }
-static bool inRange(double low, double high, double x)
-{
- return (low <= x && x <= high);
-}
+
 
 void IMU::getEulerAnglesAndScale(std::vector<uint16_t> &eulerAngles){
 

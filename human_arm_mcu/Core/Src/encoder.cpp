@@ -16,17 +16,11 @@ void Encoder::update_position() {
 float Encoder::get_position() {
     update_position();
     // current position in angles
-    return 360.0 - ((float)m_prev_counts / 10000.0) * 360.0;
+    return ((float)m_prev_counts / 10000.0) * 360.0;
 }
 
 
 uint16_t Encoder::get_position_and_scale(){
 	uint16_t output = (uint16_t)get_position();
-	uint16_t output_scaled = 700;
-	if (output >=250){
-		output_scaled = (output-250)*(700/110);
-	}
-
-
-	return output_scaled;
+	output = ( output * 1000.0 / 100.0);
 }

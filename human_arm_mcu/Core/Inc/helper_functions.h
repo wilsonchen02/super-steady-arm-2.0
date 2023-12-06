@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "../../Eigen/Eigen/Eigen"
+#include <math.h>
 
 Eigen::Matrix3f eulers_to_rot_mat(std::vector<float> &eulerAngles);
 
